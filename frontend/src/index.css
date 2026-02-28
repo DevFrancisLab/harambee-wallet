@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 37 33% 95%;
+    --foreground: 220 26% 9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 26% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 26% 9%;
+
+    --primary: 224 78% 48%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 142 71% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 9% 46%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 220 26% 9%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 37 20% 88%;
+    --input: 37 20% 88%;
+    --ring: 224 78% 48%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 26% 9%;
+    --sidebar-primary: 224 78% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 37 33% 95%;
+    --sidebar-accent-foreground: 220 26% 9%;
+    --sidebar-border: 37 20% 88%;
+    --sidebar-ring: 224 78% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-nunito;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .shadow-warm {
+    box-shadow: 0 4px 20px -4px hsl(37 33% 80% / 0.6);
+  }
+  .shadow-warm-lg {
+    box-shadow: 0 8px 32px -8px hsl(37 33% 70% / 0.5);
+  }
+}
