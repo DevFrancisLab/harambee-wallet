@@ -41,10 +41,12 @@ export function WalletExample() {
   const handleSaveWallet = async () => {
     try {
       clearError();
-      const result = await saveWallet({
-        address: exampleAddress,
-        network: 'cardano',
-      });
+      const payload = {
+        wallet_address: exampleAddress,
+        chain: 'cardano',
+      };
+      console.log('Sending wallet:', payload);
+      const result = await saveWallet(payload);
 
       toast({
         title: 'Success',

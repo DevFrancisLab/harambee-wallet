@@ -36,9 +36,23 @@ export function useWalletAPI() {
       setError(null);
       setLoading(true);
 
+      // attach Authorization header if token exists
+      const token = localStorage.getItem('accessToken');
+      if (token) {
+        console.log('useWalletAPI: adding auth token to request');
+      } else {
+        console.warn('useWalletAPI: no auth token available for', path);
+        window.alert('Login required');
+      }
+
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      };
+
       const response = await fetch(url, {
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         ...options,
       });
 
@@ -64,22 +78,31 @@ export function useWalletAPI() {
   /**
    * Save wallet address to the backend
    * 
-   * @param {Object} walletData - Wallet information
-   * @param {string} walletData.address - Wallet address
-   * @param {string} walletData.network - Network (cardano, bitcoin, spark)
+  * @param {Object} walletData - Wallet information
+  * @param {string} walletData.wallet_address - Wallet address (preferred)
+  * @param {string} [walletData.chain] - Network or chain identifier (cardano, bitcoin, spark)
+  *   if not provided the hook will accept `network` for backwards compatibility
    * @returns {Promise<Object>} Saved wallet record
-   * 
-   * @example
-   * const wallet = await saveWallet({
-   *   address: 'addr_test1vrr6r...',
-   *   network: 'cardano'
-   * });
+    *
+    * @example
+    * const wallet = await saveWallet({
+    *   wallet_address: 'addr_test1vrr6r...',
+    *   chain: 'cardano'
+    * });
    */
   const saveWallet = useCallback(
     (walletData) => {
+      // normalize old keys (address/network) so we never send unexpected
+      // fields that the backend serializer will reject. Everything passing
+      // through this hook is sanitized.
+      const payload = {
+        wallet_address: walletData.wallet_address || walletData.address,
+        chain: walletData.chain || walletData.network || 'cardano',
+      };
+      console.log('useWalletAPI.saveWallet payload', payload);
       return request('/api/wallets/save/', {
         method: 'POST',
-        body: JSON.stringify(walletData),
+        body: JSON.stringify(payload),
       });
     },
     [request]

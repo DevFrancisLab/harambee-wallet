@@ -68,10 +68,14 @@ export function ConnectWallet() {
       const walletData = mockWalletConnect();
 
       // Step 2: Send to backend
-      const savedWallet = await saveWallet({
-        address: walletData.address,
-        network: walletData.network,
-      });
+      // build a payload that matches the backend serializer expectations
+      const payload = {
+        wallet_address: walletData.address,
+        chain: walletData.network || "cardano",
+      };
+      console.log("Sending wallet:", payload);
+
+      const savedWallet = await saveWallet(payload);
 
       // Step 3: Store in localStorage
       localStorage.setItem(STORAGE_KEY, walletData.address);

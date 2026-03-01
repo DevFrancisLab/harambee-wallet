@@ -12,16 +12,37 @@ from .services.utxos_service import sign_transaction, get_wallet_balance, enable
 logger = logging.getLogger(__name__)
 
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
+
+@method_decorator(csrf_exempt, name="dispatch")
 class SaveWalletView(APIView):
     """Save a wallet address to the database."""
     def post(self, request):
+        # debugging helpers: dump the raw request data and user
+        print("Incoming wallet request:", request.data)
+        print("User:", getattr(request, "user", None))
+        # log the incoming payload for debugging purposes
+        logger.debug(f"SaveWalletView POST data: {request.data}")
+
         serializer = WalletSerializer(data=request.data)
         if serializer.is_valid():
             wallet = serializer.save()
-            logger.info(f"Wallet saved: {wallet.wallet_address}")
+            # include chain/other info in logs for troubleshooting
+            logger.info(f"Wallet saved: {wallet.wallet_address} (chain={wallet.chain})")
             return Response(WalletSerializer(wallet).data, status=status.HTTP_201_CREATED)
+
+        # validation failed; capture errors and return a consistent error shape
+        print("Serializer errors:", serializer.errors)
         logger.warning(f"Invalid wallet data: {serializer.errors}")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # structure the response so callers always receive a predictable JSON
+        error_response = {
+            "success": False,
+            "error": "validation failed",
+            "details": serializer.errors,
+        }
+        return Response(error_response, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SignWalletView(APIView):
@@ -101,9 +122,3 @@ class EnableWalletView(APIView):
         except Exception as e:
             logger.error(f"Unexpected error during wallet enable: {e}")
             return Response({"error": "An unexpected error occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-class BalanceView(APIView):
-    def get(self, request, wallet):
-        # In a real implementation you would query chain / DB for balance
-        # Here we return a placeholder value for hackathon speed
-        return Response({"wallet": wallet, "balance": 0})

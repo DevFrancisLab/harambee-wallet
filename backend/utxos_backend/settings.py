@@ -93,6 +93,14 @@ CORS_ALLOWED_ORIGINS = [
 # allow the browser to send cookies/credentials
 CORS_ALLOW_CREDENTIALS = True
 
+# since the frontend runs on a different origin, add it to the list of
+# trusted sites for CSRF validation.  This prevents "Referer"/"Origin"
+# mismatches when Django checks CSRF tokens on POST requests.
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
 ALLOWED_HOSTS = ["*"]
 # for development it's okay to allow all hosts, restrict in production
 
@@ -114,7 +122,7 @@ LOGGING = {
     "loggers": {
         "wallets": {
             "handlers": ["console"],
-            "level": "INFO",
+            "level": "DEBUG",
         },
     },
 }
