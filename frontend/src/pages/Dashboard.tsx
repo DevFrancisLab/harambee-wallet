@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { PlusCircle, Heart, Users, Wallet } from "lucide-react";
 import { mockFundraisers, mockUserProfile } from "@/lib/mock-data";
+import ConnectWalletButton from "@/components/ConnectWalletButton";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
@@ -20,6 +21,15 @@ const Dashboard = () => {
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <h1 className="text-2xl font-800 text-foreground mb-1">Welcome back, {mockUserProfile.name.split(" ")[0]} 👋</h1>
         <p className="text-muted-foreground mb-6">Your community is counting on you</p>
+      </motion.div>
+
+      {/* Wallet connect card */}
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="mb-6">
+        <Card className="shadow-warm border-0">
+          <CardContent className="p-4">
+            <ConnectWalletButton />
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Stats */}
