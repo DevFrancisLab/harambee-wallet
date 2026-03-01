@@ -17,14 +17,6 @@
 
   <body>
     <div id="root"></div>
-    <!-- Ensure Buffer is available for deps that expect Node Buffer (e.g. bitcoinjs-lib) -->
-    <!-- use wildcard import because the package uses CommonJS exports and may not provide a named export -->
-    <script type="module">
-      import * as buf from '/node_modules/buffer/index.js';
-      // buffer module exports Buffer on the object
-      const B = buf.Buffer || buf.default || buf;
-      if (!globalThis.Buffer) globalThis.Buffer = B;
-    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

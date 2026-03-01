@@ -1,4 +1,7 @@
 import type { Config } from "tailwindcss";
+// plugins imported as ES modules rather than using `require` to avoid runtime
+// errors when this file is processed by Vite's style pipeline.
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -82,5 +85,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

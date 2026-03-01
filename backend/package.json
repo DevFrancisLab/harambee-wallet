@@ -1,0 +1,11 @@
+{
+  "name": "utxos-backend-node",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node utxos_signer.js"
+  },
+  "dependencies": {
+    "@utxos/sdk": "^0.2.0"
+  }
+}

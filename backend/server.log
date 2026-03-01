@@ -1,0 +1,7 @@
+nohup: ignoring input
+Watching for file changes with StatReloader
+Wallet saved: addr_test1vrr6r5y62m7xdyvvz7cfz7qh5x9dmjpfq08t9pnl4m4m3qxg5vls
+[01/Mar/2026 12:14:10] "POST /api/wallets/save/ HTTP/1.1" 201 133
+Invalid wallet data: {'wallet_address': [ErrorDetail(string='This field is required.', code='required')]}
+Bad Request: /api/wallets/save/
+[01/Mar/2026 12:14:55] "POST /api/wallets/save/ HTTP/1.1" 400 46
